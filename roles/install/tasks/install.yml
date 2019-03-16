@@ -14,6 +14,7 @@
       repo: "https://github.com/addshore/mediawiki-docker-dev.git"
       version: master
       dest: "{{ docker_destination }}/docker"
+      force: yes
 
 - name: Clone mediawiki
   git:
@@ -21,6 +22,7 @@
       repo: "{{ mediawiki_src }}"
       version: master
       dest: "{{ mediawiki_destination }}/mediawiki"
+      force: yes
 
 - name: Clone skin(s)
   git:
@@ -28,6 +30,7 @@
       repo: "{{ item.src }}"
       version: master
       dest: "{{ mediawiki_destination }}/mediawiki/skins/{{ item.name }}"
+      force: yes
   with_items: "{{ skins }}"
 
 - name: Clone extensions
@@ -36,6 +39,7 @@
       repo: "{{ item.src }}"
       version: master
       dest: "{{ mediawiki_destination }}/mediawiki/extensions/{{ item.name }}"
+      force: yes
   with_items: "{{ extensions }}"
 
 - name: Add composer dependencies

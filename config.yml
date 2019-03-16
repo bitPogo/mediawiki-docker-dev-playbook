@@ -1,16 +1,16 @@
 #where should all the whole docker stuff go?
-docker_destination: '/home/test/mw-dev'
+docker_destination: '/home/user/targetFolder/'
 #port
 port: 8080
 #add to /etc/hosts
 addToHostList: True
 # host os
 distribution: 'Debian'
-#where to mediawiki push it
-mediawiki_destination: '/srv/dev/git/gerrit/mediawiki'
+#where place to mediawiki?
+mediawiki_destination: '/srv/dev/git/gerrit'
 #where to take mediawiki from
 mediawiki_src: 'https://gerrit.wikimedia.org/r/mediawiki/core'
-#just the defautl skin
+#just the default skin
 skins:
     - { 
         name: 'Vector',
@@ -51,4 +51,4 @@ extensions:
         ],
      }
 #other custom locals
-localsettings: ''
+localsettings: []
