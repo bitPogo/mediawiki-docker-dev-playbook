@@ -1,0 +1,32 @@
+- name: Update package list
+  apt:
+      update_cache: yes
+
+- name: Check docker-repo is available
+  script: ./files/debianCheckDocker.sh
+  args:
+      executable: /bin/bash
+
+- name: Update package list
+  apt:
+      update_cache: yes
+
+- name: Install docker
+  package:
+      name: docker-ce
+      state: present
+
+- name: Install git
+  package:
+      name: git
+      state: present
+
+- name: Install curl
+  package:
+      name: curl
+      state: present
+
+- name: Get docker-compose
+  script: ./files/debianDockerCompose.sh
+  args:
+      executable: /bin/bash

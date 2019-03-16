@@ -1,0 +1,58 @@
+- name: Run composer install
+  shell: docker run -i --rm --user $(id -u):$(id -g) -v ~/.composer:/tmp -v $(pwd):/app docker.io/composer install
+  args:
+      chdir: "{{ mediawiki_destination }}/mediawiki/"
+      executable: /bin/bash
+
+- name: Set local enviroment
+  template:
+      src: ./templates/env.j2
+      dest: "{{ docker_destination }}/docker/local.env"
+
+- name: Remove old LocalSettings
+  file:
+      path: "{{ mediawiki_destination }}/mediawiki/LocalSettings.php"
+      state: absent
+
+- name: Copy new LocalSettings to mediawiki
+  template:
+      src: ./templates/LocalSettings.j2
+      dest: "{{ mediawiki_destination }}/mediawiki/LocalSettings.php"
+
+- name: Remove docker LocalSettings
+  file:
+      path: "{{ docker_destination }}/docker/config/mediawiki/LocalSettings.php"
+      state: absent
+
+- name: Copy new LocalSettings to docker
+  template:
+      src: ./templates/LocalSettings_docker.j2
+      dest: "{{ docker_destination }}/docker/config/mediawiki/LocalSettings.php"
+
+- name: Add default web into hosts
+  lineinfile:
+      path: /etc/hosts
+      insertafter: EOF
+      line: "127.0.0.1 default.web.mw.localhost # mediawiki-docker-dev"
+  when: addToHostList
+
+- name: Add proxy into hosts
+  lineinfile:
+      path: /etc/hosts
+      insertafter: EOF
+      line: "127.0.0.1 proxy.mw.localhost # mediawiki-docker-dev"
+  when: addToHostList
+
+- name: Add phpmyaddmin into hosts
+  lineinfile:
+      path: /etc/hosts
+      insertafter: EOF
+      line: "127.0.0.1 phpmyadmin.mw.localhost # mediawiki-docker-dev"
+  when: addToHostList
+
+- name: Add graphite into hosts
+  lineinfile:
+      path: /etc/hosts
+      insertafter: EOF
+      line: "127.0.0.1 graphite.mw.localhost # mediawiki-docker-dev"
+  when: addToHostList

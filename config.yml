@@ -1,0 +1,54 @@
+#where should all the whole docker stuff go?
+docker_destination: '/home/test/mw-dev'
+#port
+port: 8080
+#add to /etc/hosts
+addToHostList: True
+# host os
+distribution: 'Debian'
+#where to mediawiki push it
+mediawiki_destination: '/srv/dev/git/gerrit/mediawiki'
+#where to take mediawiki from
+mediawiki_src: 'https://gerrit.wikimedia.org/r/mediawiki/core'
+#just the defautl skin
+skins:
+    - { 
+        name: 'Vector',
+        src: 'https://gerrit.wikimedia.org/r/mediawiki/skins/Vector',
+        default: True,
+     }
+#which extension should be installed
+extensions: 
+    - { 
+        name: 'Wikibase', 
+        src: 'https://gerrit.wikimedia.org/r/mediawiki/extensions/Wikibase.git', 
+        wfLoad: False,
+        composer: 'extra||merge-plugin||include||extensions/Wikibase/composer.json',
+        localsettings: [
+            '$wgEnableWikibaseRepo = true;',
+            '$wgEnableWikibaseClient = false;',
+            'require_once "$IP/extensions/Wikibase/repo/Wikibase.php";',
+            'require_once "$IP/extensions/Wikibase/repo/ExampleSettings.php";',
+            'require_once "$IP/extensions/Wikibase/client/WikibaseClient.php";',
+            'require_once "$IP/extensions/Wikibase/client/ExampleSettings.php";',
+        ]
+    }
+    - { 
+        name: 'WikibaseLexeme', 
+        wfLoad: True,
+        src: 'https://gerrit.wikimedia.org/r/mediawiki/extensions/WikibaseLexeme', 
+        composer: 'extra||merge-plugin||include||extensions/WikibaseLexeme/composer.json',
+        localsettings: [],
+     }
+    - { 
+        name: 'MobileFrontend', 
+        wfLoad: True, 
+        src: 'https://gerrit.wikimedia.org/r/mediawiki/extensions/MobileFrontend',
+        composer: '',
+        localsettings: [
+            '$wgMFAutodetectMobileView = true;',
+            '$wgMFDefaultSkinClass = "SkinMinerva";'
+        ],
+     }
+#other custom locals
+localsettings: ''

@@ -1,0 +1,5 @@
+- name: Install requirements for debian based os
+  include_tasks: ./requirements_debian.yml
+  when: distribution == 'Debian' or distribution == 'Ubuntu'
+
+# here should follow something else

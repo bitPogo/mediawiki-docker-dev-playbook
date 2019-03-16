@@ -1,0 +1,12 @@
+- name: Load configuration
+  include_vars:
+      file: ../../../config.yml
+
+- name: Start requirements
+  include_tasks: ./requirements.yml
+
+- name: Install mediawiki
+  include_tasks: ./install.yml
+
+- name: Configure
+  include_tasks: ./configure.yml
